@@ -1,65 +1,193 @@
-import Image from "next/image";
+import Link from "next/link"
+import { auth } from "@/lib/auth"
+import { buttonVariants } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
+import {
+  AnimatedMockup,
+  AnimatedFlow,
+  ScrollReveal,
+} from "@/components/landing-animations"
+import {
+  HeroBackground,
+  HeroTypewriter,
+  HeroShine,
+  HeroCTA,
+} from "@/components/hero-effects"
 
-export default function Home() {
+export default async function LandingPage() {
+  const session = await auth()
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex min-h-screen flex-col bg-background">
+      <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+          <Link href="/" className="flex items-center">
+            <img src="/logo.png" alt="Splitly" className="h-6 w-auto" />
+          </Link>
+          <nav className="flex items-center gap-3">
+            {session ? (
+              <Link
+                href="/dashboard"
+                className={cn(buttonVariants({ size: "sm" }), "inline-flex")}
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "inline-flex")}
+                >
+                  Entrar
+                </Link>
+                <Link
+                  href="/register"
+                  className={cn(buttonVariants({ size: "sm" }), "inline-flex")}
+                >
+                  Criar conta
+                </Link>
+              </>
+            )}
+          </nav>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+      </header>
+
+      <main>
+        <section className="relative mx-auto max-w-3xl px-6 py-32 text-center overflow-hidden">
+          <HeroBackground />
+          <Badge variant="secondary" className="mb-6 relative z-10">
+            Funciona com{" "}
+            <HeroTypewriter
+              phases={["Hotmart", "Kiwify", "Eduzz", "Monetizze", "Braip"]}
+              className="font-semibold text-emerald-600 dark:text-emerald-400"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+          </Badge>
+          <h1 className="relative text-5xl font-bold tracking-tight text-foreground leading-tight z-10">
+            <HeroShine>
+              Pare de queimar verba
+            </HeroShine>
+            <br />
+            <span className="text-muted-foreground/70">em campanhas duplicadas.</span>
+          </h1>
+          <p className="relative z-10 mt-6 text-lg leading-relaxed text-muted-foreground max-w-xl mx-auto">
+            Um link divide seu tráfego entre quantas landing pages, VSLs ou
+            quizzes você quiser. O sistema descobre qual converte mais — com
+            matemática, não com achismo. Em 2 minutos, sem complicação.
+          </p>
+          <div className="relative z-10 mt-10">
+            <HeroCTA>
+              <Link
+                href={session ? "/dashboard" : "/register"}
+                className={cn(buttonVariants({ size: "lg" }), "rounded-xl px-8 inline-flex relative z-10")}
+              >
+                {session ? "Ir para Dashboard" : "Quero descobrir minha página campeã — é grátis"}
+              </Link>
+            </HeroCTA>
+          </div>
+          <p className="relative z-10 mt-4 text-xs text-muted-foreground/50">
+            Sem cartão de crédito. Crie sua conta em 30 segundos.
+          </p>
+        </section>
+
+        <section className="border-t border-border bg-muted/30 py-24">
+          <div className="mx-auto max-w-5xl px-6">
+            <ScrollReveal>
+              <p className="text-center text-sm font-medium text-muted-foreground/70 uppercase tracking-wider mb-12">
+                3 passos. 2 minutos. Zero complicação.
+              </p>
+            </ScrollReveal>
+            <div className="grid gap-6 sm:grid-cols-3">
+              <ScrollReveal>
+                <div className="rounded-xl bg-background p-6 shadow-sm ring-1 ring-border">
+                  <div className="mb-3 flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-bold">
+                    1
+                  </div>
+                  <h3 className="font-semibold text-foreground">Cole suas páginas</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    As URLs das landing pages, VSLs ou quizzes. Defina o peso de
+                    cada uma. Copiar e colar.
+                  </p>
+                </div>
+              </ScrollReveal>
+              <ScrollReveal>
+                <div className="rounded-xl bg-background p-6 shadow-sm ring-1 ring-border">
+                  <div className="mb-3 flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-bold">
+                    2
+                  </div>
+                  <h3 className="font-semibold text-foreground">Um link. Todas as campanhas.</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Use o mesmo link no Meta Ads, TikTok e YouTube. O tráfego se
+                    divide sozinho. Você só sobe o anúncio.
+                  </p>
+                </div>
+              </ScrollReveal>
+              <ScrollReveal>
+                <div className="rounded-xl bg-background p-6 shadow-sm ring-1 ring-border">
+                  <div className="mb-3 flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-bold">
+                    3
+                  </div>
+                  <h3 className="font-semibold text-foreground">O motor declara a vencedora</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Cliques, vendas, receita em tempo real. Com 95% de confiança
+                    estatística, o sistema crava qual página é a campeã. Você escala.
+                  </p>
+                </div>
+              </ScrollReveal>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-border py-24">
+          <div className="mx-auto max-w-4xl px-6 text-center">
+            <ScrollReveal>
+              <p className="text-sm font-medium text-muted-foreground/70 uppercase tracking-wider mb-6">
+                A matemática decide. Você escala.
+              </p>
+            </ScrollReveal>
+            <ScrollReveal>
+              <AnimatedMockup />
+            </ScrollReveal>
+            <ScrollReveal>
+              <p className="mt-6 text-sm text-muted-foreground/70">
+                Enquanto você dorme, o motor analisa os dados e calcula com precisão qual página tem mais chance de ser a vencedora. Sem achismo, sem feeling — decisão estatística de verdade.
+              </p>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        <section className="border-t border-border bg-muted/30 py-16">
+          <div className="mx-auto max-w-4xl px-6 text-center">
+            <ScrollReveal>
+              <p className="text-sm font-medium text-muted-foreground/70 uppercase tracking-wider mb-6">
+                Seu tráfego em movimento
+              </p>
+            </ScrollReveal>
+            <AnimatedFlow />
+          </div>
+        </section>
+
+        <section className="border-t border-border bg-muted/30 py-16">
+          <div className="mx-auto max-w-4xl px-6">
+            <ScrollReveal>
+              <div className="flex flex-wrap items-center justify-center gap-8 opacity-40">
+                <span className="text-xs font-semibold text-foreground uppercase tracking-widest">Hotmart</span>
+                <span className="text-xs font-semibold text-foreground uppercase tracking-widest">Kiwify</span>
+                <span className="text-xs font-semibold text-foreground uppercase tracking-widest">Eduzz</span>
+                <span className="text-xs font-semibold text-foreground uppercase tracking-widest">Monetizze</span>
+                <span className="text-xs font-semibold text-foreground uppercase tracking-widest">Braip</span>
+                <span className="text-xs font-semibold text-foreground uppercase tracking-widest">Meta Ads</span>
+                <span className="text-xs font-semibold text-foreground uppercase tracking-widest">TikTok</span>
+                <span className="text-xs font-semibold text-foreground uppercase tracking-widest">YouTube</span>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
       </main>
+
+      <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground/70">
+        Splitly — Um link. Múltiplos destinos. A página campeã na sua mão.
+      </footer>
     </div>
-  );
+  )
 }
