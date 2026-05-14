@@ -3,6 +3,8 @@ import { eq, desc } from "drizzle-orm"
 import { db } from "@/lib/db"
 import { users, experiments } from "@/lib/db/schema"
 
+export const dynamic = "force-dynamic"
+
 export async function GET(request: NextRequest) {
   const apiKey = request.headers.get("x-api-key") || request.nextUrl.searchParams.get("api_key") || ""
 

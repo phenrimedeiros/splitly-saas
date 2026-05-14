@@ -3,6 +3,8 @@ import { eq } from "drizzle-orm"
 import { db } from "@/lib/db"
 import { events, conversions } from "@/lib/db/schema"
 
+export const dynamic = "force-dynamic"
+
 const PIXEL_GIF = Buffer.from(
   "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
   "base64"

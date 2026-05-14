@@ -3,6 +3,8 @@ import { eq, and } from "drizzle-orm"
 import { db } from "@/lib/db"
 import { events, variants, conversions } from "@/lib/db/schema"
 
+export const dynamic = "force-dynamic"
+
 function deepSearch(obj: unknown, targetKeys: string[]): string | null {
   if (!obj || typeof obj !== "object") return null
 
