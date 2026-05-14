@@ -105,7 +105,7 @@ export default async function ExperimentPage({
     }
   })
 
-  const analysis = analyzeExperiment(variantStats)
+  const analysis = analyzeExperiment(variantStats, experiment.costCents || 0)
 
   const [latestEvent] = await db
     .select({ ts: max(events.createdAt) })

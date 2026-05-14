@@ -87,7 +87,7 @@ export async function GET(
     .where(eq(experiments.slug, slug))
     .limit(1)
 
-  if (!experiment || experiment.status !== "active") {
+  if (!experiment) {
     return NextResponse.redirect(new URL("/", request.url))
   }
 
@@ -102,23 +102,30 @@ export async function GET(
 
   const cookieStore = await cookies()
   const cookieName = `ab_${slug}`
-  const existing = cookieStore.get(cookieName)
 
   let selected = variantList[0]
 
-  if (existing) {
-    const match = variantList.find((v) => v.id === existing.value)
-    selected = match || selectWeighted(variantList)
+  if (experiment.winnerVariantId) {
+    const winner = variantList.find((v) => v.id === experiment.winnerVariantId)
+    selected = winner || variantList[0]
+  } else if (experiment.status !== "active") {
+    return NextResponse.redirect(new URL("/", request.url))
   } else {
-    selected = selectWeighted(variantList)
-  }
+    const existing = cookieStore.get(cookieName)
+    if (existing) {
+      const match = variantList.find((v) => v.id === existing.value)
+      selected = match || selectWeighted(variantList)
+    } else {
+      selected = selectWeighted(variantList)
+    }
 
-  cookieStore.set(cookieName, selected.id, {
-    maxAge: 30 * 24 * 60 * 60,
-    path: "/",
-    httpOnly: true,
-    sameSite: "lax",
-  })
+    cookieStore.set(cookieName, selected.id, {
+      maxAge: 30 * 24 * 60 * 60,
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+    })
+  }
 
   const visitorHash = uuidv4()
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { eq } from "drizzle-orm"
+import { eq, and } from "drizzle-orm"
 import { db } from "@/lib/db"
 import { events, variants, conversions } from "@/lib/db/schema"
 
@@ -230,23 +230,57 @@ export async function POST(request: NextRequest) {
     variant?.name ||
     ""
 
-  const [conversion] = await db
-    .insert(conversions)
-    .values({
-      experimentId: event.experimentId,
-      variantId: event.variantId,
-      visitorHash,
-      orderId: orderId || undefined,
-      amount: amountStr ? String(amountStr) : undefined,
-      status,
-      platform,
-      rawData: sanitizePayload(body),
-    })
-    .returning()
+  let conversion: typeof conversions.$inferSelect | undefined
 
-  console.log(
-    `[Splitly] ✅ Conversão: ${productName || variant?.name} · R$${amountStr || "?"} · ${status}`
-  )
+  if (orderId) {
+    const [existing] = await db
+      .select()
+      .from(conversions)
+      .where(
+        and(
+          eq(conversions.orderId, orderId),
+          eq(conversions.visitorHash, visitorHash)
+        )
+      )
+      .limit(1)
+
+    if (existing) {
+      const [updated] = await db
+        .update(conversions)
+        .set({
+          status,
+          amount: amountStr ? String(amountStr) : existing.amount,
+          rawData: sanitizePayload(body),
+        })
+        .where(eq(conversions.id, existing.id))
+        .returning()
+      conversion = updated
+
+      console.log(
+        `[Splitly] 🔄 Atualizada: ${productName || variant?.name} · R$${amountStr || "?"} · ${existing.status} → ${status}`
+      )
+    }
+  }
+
+  if (!conversion) {
+    ;[conversion] = await db
+      .insert(conversions)
+      .values({
+        experimentId: event.experimentId,
+        variantId: event.variantId,
+        visitorHash,
+        orderId: orderId || undefined,
+        amount: amountStr ? String(amountStr) : undefined,
+        status,
+        platform,
+        rawData: sanitizePayload(body),
+      })
+      .returning()
+
+    console.log(
+      `[Splitly] ✅ Conversão: ${productName || variant?.name} · R$${amountStr || "?"} · ${status}`
+    )
+  }
 
   return NextResponse.json({ success: true, id: conversion.id })
 }

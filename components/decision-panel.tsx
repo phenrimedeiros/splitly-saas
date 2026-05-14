@@ -17,10 +17,14 @@ const STATUS_LABELS: Record<string, { label: string; variant: "default" | "secon
   inconclusive: { label: "Inconclusivo", variant: "outline" },
 }
 
-function VariantBar({ variant, maxProb }: { variant: BayesianResult; maxProb: number }) {
-  const pct = variant.probabilityOfBeingBest * 100
-  const isWinner = variant.probabilityOfBeingBest >= 0.95
-  const isLoser = variant.probabilityOfBeingBest < 0.05
+function VariantBar({ variant, maxProb, hasRevenue }: { variant: BayesianResult; maxProb: number; hasRevenue: boolean }) {
+  const primaryPbb = hasRevenue ? variant.revenueProbabilityOfBeingBest : variant.probabilityOfBeingBest
+  const primaryPct = primaryPbb * 100
+  const isWinner = primaryPbb >= 0.95
+  const isLoser = primaryPbb < 0.05
+
+  const displayPct = primaryPct
+  const displayProb = primaryPbb
 
   return (
     <div className="space-y-1">
@@ -29,11 +33,21 @@ function VariantBar({ variant, maxProb }: { variant: BayesianResult; maxProb: nu
           <span className="font-medium text-foreground">{variant.variantName}</span>
           {isWinner && <span className="text-xs">🏆</span>}
           {isLoser && <span className="text-xs">⚠️</span>}
+          {hasRevenue && variant.probabilityOfBeingBest !== variant.revenueProbabilityOfBeingBest && (
+            <span className="text-[10px] text-muted-foreground/60" title="PBB por taxa de conversão">
+              (conv: {(variant.probabilityOfBeingBest * 100).toFixed(0)}%)
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
           <span>{variant.clicks} cliques</span>
           <span>{variant.sales} vendas</span>
           {variant.revenue > 0 && <span className="text-foreground/80 font-medium">R$ {variant.revenue.toFixed(0)}</span>}
+          {variant.profit !== 0 && (
+            <span className={variant.profit > 0 ? "text-emerald-600 dark:text-emerald-400 font-medium" : "text-red-500 font-medium"}>
+              {variant.profit > 0 ? "+" : ""}R$ {variant.profit.toFixed(0)}
+            </span>
+          )}
         </div>
       </div>
       <div className="flex items-center gap-3">
@@ -42,18 +56,21 @@ function VariantBar({ variant, maxProb }: { variant: BayesianResult; maxProb: nu
             className={`h-full rounded transition-all duration-500 ${
               isWinner ? "bg-emerald-500" : isLoser ? "bg-red-300" : "bg-muted-foreground/70"
             }`}
-            style={{ width: `${Math.max((variant.probabilityOfBeingBest / maxProb) * 100, 2)}%` }}
+            style={{ width: `${Math.max((displayProb / maxProb) * 100, 2)}%` }}
           />
         </div>
         <span className={`text-sm font-mono font-bold w-16 text-right ${
           isWinner ? "text-emerald-600 dark:text-emerald-400" : isLoser ? "text-red-500" : "text-foreground/70"
         }`}>
-          {pct.toFixed(1)}%
+          {displayPct.toFixed(1)}%
         </span>
       </div>
-      <div className="text-xs text-muted-foreground/70">
-        Conv. rate: {(variant.conversionRate * 100).toFixed(1)}% · 90% intervalo: [
-        {(variant.credibleInterval[0] * 100).toFixed(1)}% – {(variant.credibleInterval[1] * 100).toFixed(1)}%]
+      <div className="text-xs text-muted-foreground/70 flex flex-wrap gap-x-4 gap-y-0.5">
+        <span>Conv. rate: {(variant.conversionRate * 100).toFixed(1)}% · 90%: [{(variant.credibleInterval[0] * 100).toFixed(1)}% – {(variant.credibleInterval[1] * 100).toFixed(1)}%]</span>
+        {variant.avgOrderValue > 0 && <span>Ticket: R$ {variant.avgOrderValue.toFixed(0)}</span>}
+        {hasRevenue && variant.expectedRevenuePerClick > 0 && (
+          <span>R$ {variant.expectedRevenuePerClick.toFixed(2)}/clique</span>
+        )}
       </div>
     </div>
   )
@@ -87,7 +104,9 @@ export function DecisionPanel({
   }
 
   const status = STATUS_LABELS[analysis.status] || STATUS_LABELS.in_progress
-  const maxProb = Math.max(...analysis.variants.map((v) => v.probabilityOfBeingBest), 0.01)
+  const hasRevenue = analysis.variants.some((v) => v.revenue > 0)
+  const primaryPbb = (v: BayesianResult) => hasRevenue ? v.revenueProbabilityOfBeingBest : v.probabilityOfBeingBest
+  const maxProb = Math.max(...analysis.variants.map(primaryPbb), 0.01)
 
   return (
     <Card className={
@@ -146,7 +165,7 @@ export function DecisionPanel({
       </CardHeader>
       <CardContent className="space-y-4">
         {analysis.variants.map((v) => (
-          <VariantBar key={v.variantId} variant={v} maxProb={maxProb} />
+          <VariantBar key={v.variantId} variant={v} maxProb={maxProb} hasRevenue={hasRevenue} />
         ))}
       </CardContent>
     </Card>
