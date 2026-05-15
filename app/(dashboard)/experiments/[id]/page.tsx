@@ -243,12 +243,12 @@ export default async function ExperimentPage({
                     <div className="flex items-center gap-4 text-xs text-muted-foreground">
                       <span>{vClicks} cliques</span>
                       {vSales > 0 && (
-                        <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                        <span className="text-amber-400 font-medium">
                           {vSales} vendas
                         </span>
                       )}
                       {vRevenue > 0 && (
-                        <span className="text-foreground/80 font-medium">
+                        <span className="text-amber-400 font-medium">
                           R$ {vRevenue.toFixed(0)}
                         </span>
                       )}

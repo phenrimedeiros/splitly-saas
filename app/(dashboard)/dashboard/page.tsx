@@ -112,7 +112,7 @@ export default async function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{totalSales}</p>
+              <p className="text-2xl font-bold text-amber-400">{totalSales}</p>
             </CardContent>
           </Card>
           <Card>
@@ -194,11 +194,11 @@ export default async function DashboardPage() {
                       cliques
                     </span>
                     <span>
-                      <span className="font-medium text-emerald-600 dark:text-emerald-400">{exp.sales}</span>{" "}
+                      <span className="font-medium text-amber-400">{exp.sales}</span>{" "}
                       vendas
                     </span>
                     {Number(exp.revenue || 0) > 0 && (
-                      <span className="text-foreground/80 font-medium">
+                      <span className="text-amber-400 font-medium">
                         R$ {Number(exp.revenue).toFixed(0)}
                       </span>
                     )}

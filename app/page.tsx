@@ -55,7 +55,7 @@ export default async function LandingPage() {
         <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden">
           <GridPattern />
           <GradientOrb className="top-0 -left-64 w-[600px] h-[600px] bg-emerald-500/15 dark:bg-emerald-500/10" />
-          <GradientOrb className="top-32 -right-64 w-[500px] h-[500px] bg-violet-500/10 dark:bg-violet-500/8" />
+          <GradientOrb className="bottom-0 -right-64 w-[500px] h-[500px] bg-emerald-400/10 dark:bg-emerald-400/5" />
           <HeroBackground />
 
           <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
@@ -72,14 +72,14 @@ export default async function LandingPage() {
               Descubra qual oferta
             </HeroShine>
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-emerald-400 to-teal-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-300 to-amber-400">
               gera mais lucro
             </span>
             <br />
             <span className="text-muted-foreground/60">sem duplicar campanhas.</span>
           </h1>
 
-          <p className="relative z-10 mt-8 text-lg leading-relaxed text-muted-foreground max-w-2xl mx-auto">
+          <p className="relative z-10 mt-8 text-lg leading-relaxed text-foreground/75 max-w-2xl mx-auto">
             Um <strong className="text-foreground">link único</strong> divide seu tráfego entre quantas
             landing pages quiser. Postback da Hotmart rastreia cada venda.
             O <strong className="text-foreground">motor bayesiano</strong> crava qual oferta
@@ -127,9 +127,9 @@ export default async function LandingPage() {
                   <div className="space-y-2">
                     <div className="text-4xl font-bold text-foreground tracking-tight tabular-nums">
                       {stat.value === 0 ? (
-                        <span className="text-emerald-500">Zero</span>
+                        <span className="text-amber-400">Zero</span>
                       ) : stat.value === 1 ? (
-                        <span className="text-emerald-500">1</span>
+                        <span className="text-amber-400">1</span>
                       ) : (
                         <span>
                           {stat.value === 95 ? (
@@ -159,7 +159,7 @@ export default async function LandingPage() {
               <h2 className="text-center text-3xl font-bold text-foreground mb-4">
                 Três passos. Zero complicação.
               </h2>
-              <p className="text-center text-muted-foreground mb-16 max-w-lg mx-auto">
+              <p className="text-center text-foreground/70 mb-16 max-w-lg mx-auto">
                 Configure em 2 minutos e deixe o motor trabalhar enquanto você escala.
               </p>
             </ScrollReveal>
@@ -224,7 +224,7 @@ export default async function LandingPage() {
               <h2 className="text-3xl font-bold text-foreground mb-2">
                 Um link. Múltiplos destinos.
               </h2>
-              <p className="text-muted-foreground mb-12">
+              <p className="text-foreground/70 mb-12">
                 Cada visitante recebe um ID único de rastreio. O postback da Hotmart
                 identifica exatamente qual oferta gerou a venda.
               </p>
@@ -337,7 +337,7 @@ export default async function LandingPage() {
                 },
               ].map((t, i) => (
                 <ScrollReveal key={i}>
-                  <div className="rounded-xl bg-background p-6 ring-1 ring-border hover:ring-emerald-500/20 transition-all duration-300">
+                  <div className="rounded-xl bg-gradient-to-br from-emerald-500/5 to-amber-500/5 p-6 ring-1 ring-border hover:ring-emerald-500/20 transition-all duration-300">
                     <div className="flex items-center gap-1 mb-4">
                       {[1, 2, 3, 4, 5].map((s) => (
                         <svg key={s} className="size-4 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
@@ -420,7 +420,7 @@ export default async function LandingPage() {
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
                 Pronto para descobrir sua oferta campeã?
               </h2>
-              <p className="text-muted-foreground mb-10 text-lg">
+              <p className="text-foreground/70 mb-10 text-lg">
                 Configure em 2 minutos. Sem cartão de crédito. Resultados em tempo real.
               </p>
               <HeroCTA>

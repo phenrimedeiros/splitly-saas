@@ -106,7 +106,7 @@ export default async function SharePage({
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-foreground">{v.name}</span>
                       {variantProfit > 0 && (
-                        <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                        <span className="text-xs text-amber-400 font-medium">
                           +R$ {variantProfit.toFixed(0)}
                         </span>
                       )}
@@ -129,10 +129,10 @@ export default async function SharePage({
                       <span className="font-medium text-foreground/80">{clicks}</span> cliques
                     </div>
                     <div>
-                      <span className="font-medium text-emerald-600 dark:text-emerald-400">{sales}</span> vendas
+                      <span className="font-medium text-amber-400">{sales}</span> vendas
                     </div>
                     <div>
-                      <span className="font-medium text-foreground/80">R$ {revenue.toFixed(0)}</span> receita
+                      <span className="font-medium text-amber-400">R$ {revenue.toFixed(0)}</span> receita
                     </div>
                     <div>
                       {variantRoas > 0 && (

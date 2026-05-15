@@ -204,7 +204,11 @@ export function AnimatedMockup() {
                   }
                 >
                   {v.name}
-                  {i === 0 && <span className="ml-1 text-xs">🏆</span>}
+                                    {i === 0 && (
+                    <svg className="size-3.5 text-amber-400 inline ml-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.8h7.6z" />
+                    </svg>
+                  )}
                 </span>
                 <span
                   className={`font-mono font-bold text-xs ${

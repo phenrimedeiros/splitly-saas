@@ -85,13 +85,13 @@ export function VariantRow({
         {saleCount > 0 && (
           <>
             <span className="text-border">|</span>
-            <span title="Vendas" className="text-emerald-600 dark:text-emerald-400 font-medium">
+            <span title="Vendas" className="text-amber-400 font-medium">
               {saleCount} vendas
             </span>
           </>
         )}
         {revenue > 0 && (
-          <span title="Receita" className="text-foreground/80 font-medium">
+          <span title="Receita" className="text-amber-400 font-medium">
             R$ {revenue.toFixed(0)}
           </span>
         )}

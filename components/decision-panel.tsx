@@ -32,7 +32,11 @@ function VariantBar({ variant, maxProb, hasRevenue }: { variant: BayesianResult;
       <div className="flex items-center justify-between text-sm">
         <div className="flex items-center gap-2">
           <span className="font-medium text-foreground">{variant.variantName}</span>
-          {isWinner && <span className="text-xs">🏆</span>}
+                    {isWinner && (
+            <svg className="size-3.5 text-amber-400 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.8h7.6z" />
+            </svg>
+          )}
           {isLoser && <span className="text-xs">⚠️</span>}
           {hasRevenue && variant.probabilityOfBeingBest !== variant.revenueProbabilityOfBeingBest && (
             <span className="text-[10px] text-muted-foreground/60" title="PBB por taxa de conversão">
@@ -43,9 +47,9 @@ function VariantBar({ variant, maxProb, hasRevenue }: { variant: BayesianResult;
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
           <span>{variant.clicks} cliques</span>
           <span>{variant.sales} vendas</span>
-          {variant.revenue > 0 && <span className="text-foreground/80 font-medium">R$ {variant.revenue.toFixed(0)}</span>}
+          {variant.revenue > 0 && <span className="text-amber-400 font-medium">R$ {variant.revenue.toFixed(0)}</span>}
           {variant.profit !== 0 && (
-            <span className={variant.profit > 0 ? "text-emerald-600 dark:text-emerald-400 font-medium" : "text-red-500 font-medium"}>
+            <span className={variant.profit > 0 ? "text-amber-400 font-medium" : "text-red-500 font-medium"}>
               {variant.profit > 0 ? "+" : ""}R$ {variant.profit.toFixed(0)}
             </span>
           )}
@@ -70,7 +74,7 @@ function VariantBar({ variant, maxProb, hasRevenue }: { variant: BayesianResult;
         <span>Conv. rate: {(variant.conversionRate * 100).toFixed(1)}% · 90%: [{(variant.credibleInterval[0] * 100).toFixed(1)}% – {(variant.credibleInterval[1] * 100).toFixed(1)}%]</span>
         {variant.avgOrderValue > 0 && <span>Ticket: R$ {variant.avgOrderValue.toFixed(0)}</span>}
         {hasRevenue && variant.expectedRevenuePerClick > 0 && (
-          <span>R$ {variant.expectedRevenuePerClick.toFixed(2)}/clique</span>
+          <span className="text-amber-400">R$ {variant.expectedRevenuePerClick.toFixed(2)}/clique</span>
         )}
       </div>
     </div>
