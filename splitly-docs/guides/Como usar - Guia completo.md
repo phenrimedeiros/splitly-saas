@@ -2,13 +2,13 @@
 tags: [guides, tutorial]
 ---
 
-# Como usar — Guia completo
+# Como usar Splitly Lead — Guia completo
 
 > ← [[Splitly - Home]] | Veja também: [[Dashboard e UX]], [[Redirect e Tracking]], [[Decision Engine]]
 
 ## 1. Criar conta
 
-Acesse https://splitly.app/register
+Acesse https://splitly-saas.vercel.app/register
 
 Preencha nome, email e senha (mínimo 6 caracteres).
 
@@ -16,7 +16,7 @@ Preencha nome, email e senha (mínimo 6 caracteres).
 
 1. Clique em **Novo experimento**
 2. Dê um nome (ex: "Teste PV vs VSL vs Quiz")
-3. Defina um slug (ex: `teste-1`) — será o link: `splitly.app/r/teste-1`
+3. Defina um slug (ex: `teste-1`) — será o link: `splitly-saas.vercel.app/r/teste-1`
 4. Clique em **Criar experimento**
 
 ## 3. Adicionar variantes
@@ -26,7 +26,7 @@ Dentro do experimento, clique em **+ Adicionar variante**:
 | Campo | Exemplo |
 |-------|---------|
 | Nome | "PV Longa" |
-| URL | `https://pastorrhema.com` |
+| URL | `https://minhalanding.com` |
 | Peso (%) | 50 |
 
 Opcional: expanda **+ UTM** para adicionar `utm_source`, `utm_campaign`, etc.
@@ -45,48 +45,54 @@ Use esse link em **todas** as campanhas do Meta Ads, TikTok, etc.
 
 ## 6. Configurar tracking
 
-### Se usa Hotmart (ou Kiwify, Eduzz, etc.)
+### 6a. Instalar tracker.js nas landing pages (OBRIGATÓRIO)
 
-1. Na página do experimento, expanda **1. Postback**
-2. Copie a URL do postback
-3. Na Hotmart: Ferramentas → Notificação de vendas → Cole a URL
-4. Eventos: Venda aprovada, Reembolso, Cancelamento
-5. Salve
+**Em cada landing page**, cole no `<head>`:
+```html
+<script src="https://splitly-saas.vercel.app/tracker.js"></script>
+```
+O script captura o código de rastreio da URL e injeta automaticamente nos botões de checkout da Hotmart.
 
-### Se usa landing page própria
+### 6b. Configurar postback na Hotmart
 
-1. Na página do experimento, expanda **2. Script landing page**
-2. Cole o `<script>` no `<head>` de cada landing page
-3. O script automaticamente injeta `xcod` nos botões de checkout
+1. Hotmart → **Ferramentas** → **Notificação de vendas**
+2. Cadastre a URL: `https://splitly-saas.vercel.app/api/postback`
+3. Eventos: **Venda aprovada**, **Reembolso**, **Cancelamento**
+4. Salvar
 
-### Se usa checkout próprio (Shopify, WooCommerce, etc.)
+### 6c. Pixel universal (alternativa)
 
-1. Na página do experimento, expanda **3. Pixel universal**
-2. Cole a tag `<img>` na thank-you page
-3. Substitua `ID` pela variável de tracking da plataforma
+Se usa Shopify, WooCommerce ou checkout próprio, use o pixel de 1x1 na thank-you page (seção 3 do guia de configuração).
 
-## 7. Acompanhar resultados
+## 7. Preencher custo de anúncio
+
+Clique em **Adicionar custo de anúncio** no experimento e insira o gasto total. O Splitly calcula:
+- **ROAS** por variante
+- **Lucro** = receita − custo proporcional ao tráfego
+
+## 8. Acompanhar resultados
 
 O dashboard mostra em tempo real:
 - Cliques por variante
 - Vendas por variante
 - Receita por variante
+- **Lucro/prejuízo** (R$)
+- **Ticket médio** (R$)
 - Taxa de conversão
+- ROAS
 
-Adicione o **custo de anúncio** para ver o ROAS.
+## 9. Painel de Decisão
 
-## 8. Tomar decisão
+O motor bayesiano analisa os dados e recomenda com 95% de confiança:
 
-O **Painel de Decisão** usa estatística bayesiana para recomendar:
+- **Qual oferta é mais lucrativa** — P(best) ponderado por receita por clique
+- **Remover perdedoras** — variantes com <5% de chance de ser a melhor
+- **Declarar campeã** — o link passa a redirecionar 100% do tráfego pra vencedora
 
-- **Continuar teste** — precisa de mais dados
-- **Remover perdedoras** — variantes com <5% de chance
-- **Declarar campeã** — variante com >95% de confiança
+## 10. Compartilhar resultados
 
-## 9. Compartilhar
+Clique em **Criar link público** para gerar uma URL que mostra os resultados sem login. Ideal para agências.
 
-Clique em **Criar link público** para gerar uma URL que mostra os resultados sem login. Ideal para agências mostrarem resultados para clientes.
+## 11. Exportar CSV
 
-## 10. Exportar
-
-Clique em **CSV** para baixar os dados do experimento em planilha.
+Clique em **CSV** para baixar os dados completos em planilha.

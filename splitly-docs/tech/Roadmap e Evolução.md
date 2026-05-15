@@ -78,6 +78,22 @@ tags: [tech, roadmap]
 - [x] Lint 0 erros, TypeScript limpo, build passando
 - [x] Deploy: https://splitly-saas.vercel.app
 
+## v0.6.2 — Motor de Lucro (Maio 2026)
+
+- [x] Análise bayesiana ponderada por receita: P(best) por R$/clique, não só taxa de conversão
+- [x] Métricas novas: `expectedRevenuePerClick`, `avgOrderValue`, `profit`, `revenueCredibleInterval`
+- [x] Auto-redirect para campeã: link não quebra ao declarar vencedora
+- [x] Deduplicação de postback: refund/cancel atualiza, não duplica conversão
+- [x] Painel de decisão exibe lucro/prejuízo, ticket médio e R$/clique esperado
+- [x] Share page com lucro por variante, ROAS proporcional ao custo real
+- [x] Lazy DB connection (evita crash no build Vercel sem DATABASE_URL)
+- [x] `force-dynamic` em todas as API routes (Next.js 16 compat)
+- [x] `vercel.json` com framework nextjs
+- [x] Rebranding: Splitly Lead — foco em "oferta mais lucrativa"
+- [x] Landing page copy atualizada: lucro, oferta campeã
+- [x] NEXTAUTH_URL fix: `splittest-saas` → `splitly-saas`
+- [x] Docs Obsidian atualizados (Home, Decision Engine, Guia)
+
 ## v1.0 (Próximo)
 
 - [ ] Stripe integração completa

@@ -3,24 +3,27 @@ tags: [home, overview]
 created: 2026-05-12
 ---
 
-# Splitly — Teste A/B para Tráfego Pago
+# Splitly Lead — Teste A/B para Tráfego Pago
 
-**Splitly** é um SaaS multi-tenant de split de tráfego com motor bayesiano de decisão. Permite que profissionais de marketing digital e afiliados testem múltiplas landing pages, VSLs e quizzes usando **um único link** em campanhas de Meta Ads, TikTok e YouTube, sem pulverizar orçamento.
+**Splitly Lead** é um SaaS de split de tráfego com motor bayesiano de decisão focado em **lucro**. Permite que profissionais de marketing digital e afiliados testem múltiplas landing pages, VSLs e quizzes usando **um único link** em campanhas de Meta Ads, TikTok e YouTube, sem pulverizar orçamento.
 
 ## Proposta de valor
 
-> "Um único link. Múltiplos destinos. Descubra qual converte mais."
+> "Um único link. Múltiplos destinos. Descubra qual oferta é mais lucrativa."
 
 - Pare de criar campanhas separadas para cada variante
 - Um link redireciona tráfego com pesos configuráveis
 - Cookie de 30 dias garante que o mesmo usuário sempre vê a mesma variante
 - Integração nativa com Hotmart, Kiwify, Eduzz, Monetizze, Braip e 5+ plataformas
-- Motor bayesiano declara a campeã com significância estatística
+- Motor bayesiano **ponderado por receita** — não só taxa de conversão, mas **R$/clique**
+- Auto-redirect para a campeã (link não quebra ao declarar vencedora)
+- Deduplicação de postback (refund/cancel atualiza, não duplica)
+- ROAS, lucro e ticket médio por variante
 
 ## Links
 
 - **Produção**: https://splitly-saas.vercel.app
-- **Repositório**: `/Users/paulointeligente/splitly-saas`
+- **GitHub**: https://github.com/phenrimedeiros/splitly-saas
 - **Banco**: Neon PostgreSQL (serverless)
 - **Hosting**: Vercel
 
