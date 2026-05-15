@@ -24,7 +24,7 @@ function useInView(ref: React.RefObject<HTMLElement | null>) {
   return inView
 }
 
-function AnimatedCounter({
+export function AnimatedCounter({
   target,
   prefix = "",
   suffix = "",
@@ -268,6 +268,41 @@ export function ScrollReveal({ children, className }: { children: React.ReactNod
       } ${className || ""}`}
     >
       {children}
+    </div>
+  )
+}
+
+export function MarqueeIntegrations() {
+  const platforms = [
+    "Hotmart", "Kiwify", "Eduzz", "Monetizze", "Braip",
+    "Meta Ads", "TikTok Ads", "YouTube Ads", "Google Ads",
+    "PerfectPay", "Yampi", "Cartpanda", "Doppus", "HeroSpark",
+  ]
+
+  return (
+    <div className="relative overflow-hidden py-4">
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          animation: marquee 30s linear infinite;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+      <div className="animate-marquee flex gap-12 whitespace-nowrap w-max">
+        {[...platforms, ...platforms].map((name, i) => (
+          <span
+            key={`${name}-${i}`}
+            className="text-sm font-semibold text-muted-foreground/50 hover:text-foreground/80 transition-colors uppercase tracking-widest"
+          >
+            {name}
+          </span>
+        ))}
+      </div>
     </div>
   )
 }
