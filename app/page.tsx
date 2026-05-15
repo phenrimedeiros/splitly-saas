@@ -72,7 +72,7 @@ export default async function LandingPage() {
           </h1>
           <p className="relative z-10 mt-6 text-lg leading-relaxed text-muted-foreground max-w-xl mx-auto">
             Um link divide seu tráfego entre quantas landing pages, VSLs ou
-            quizzes você quiser. O sistema descobre qual converte mais — com
+            quizzes você quiser. O sistema descobre qual <strong>oferta é mais lucrativa</strong> — com
             matemática, não com achismo. Em 2 minutos, sem complicação.
           </p>
           <div className="relative z-10 mt-10">
@@ -81,7 +81,7 @@ export default async function LandingPage() {
                 href={session ? "/dashboard" : "/register"}
                 className={cn(buttonVariants({ size: "lg" }), "rounded-xl px-8 inline-flex relative z-10")}
               >
-                {session ? "Ir para Dashboard" : "Quero descobrir minha página campeã — é grátis"}
+                {session ? "Ir para Dashboard" : "Quero descobrir minha oferta campeã — é grátis"}
               </Link>
             </HeroCTA>
           </div>
@@ -103,9 +103,9 @@ export default async function LandingPage() {
                   <div className="mb-3 flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-bold">
                     1
                   </div>
-                  <h3 className="font-semibold text-foreground">Cole suas páginas</h3>
+                  <h3 className="font-semibold text-foreground">Coloque suas ofertas</h3>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    As URLs das landing pages, VSLs ou quizzes. Defina o peso de
+                    As URLs das suas landing pages, VSLs ou quizzes. Defina o peso de
                     cada uma. Copiar e colar.
                   </p>
                 </div>
@@ -127,10 +127,10 @@ export default async function LandingPage() {
                   <div className="mb-3 flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-bold">
                     3
                   </div>
-                  <h3 className="font-semibold text-foreground">O motor declara a vencedora</h3>
+                  <h3 className="font-semibold text-foreground">O motor crava a campeã</h3>
                   <p className="mt-2 text-sm text-muted-foreground">
                     Cliques, vendas, receita em tempo real. Com 95% de confiança
-                    estatística, o sistema crava qual página é a campeã. Você escala.
+                    estatística, o sistema mostra qual oferta traz mais lucro. Você escala.
                   </p>
                 </div>
               </ScrollReveal>
@@ -142,7 +142,7 @@ export default async function LandingPage() {
           <div className="mx-auto max-w-4xl px-6 text-center">
             <ScrollReveal>
               <p className="text-sm font-medium text-muted-foreground/70 uppercase tracking-wider mb-6">
-                A matemática decide. Você escala.
+                A matemática decide qual oferta é mais lucrativa. Você escala.
               </p>
             </ScrollReveal>
             <ScrollReveal>
@@ -186,7 +186,7 @@ export default async function LandingPage() {
       </main>
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground/70">
-        Splitly — Um link. Múltiplos destinos. A página campeã na sua mão.
+        Splitly Lead — Um link. Múltiplos destinos. Descubra qual oferta é mais lucrativa.
       </footer>
     </div>
   )

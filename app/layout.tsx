@@ -16,16 +16,16 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Splitly — Teste A/B para Tráfego Pago",
+  title: "Splitly Lead — Teste A/B para Tráfego Pago",
   description:
-    "Divida seu tráfego entre múltiplas páginas de destino com um único link. Descubra qual variante converte mais.",
+    "Divida seu tráfego entre múltiplas landing pages com um único link. Descubra qual oferta é mais lucrativa.",
   icons: {
     icon: "/logo-square.png",
   },
   openGraph: {
-    title: "Splitly — Teste A/B para Tráfego Pago",
+    title: "Splitly Lead — Teste A/B para Tráfego Pago",
     description:
-      "Divida seu tráfego entre múltiplas páginas de destino com um único link. Descubra qual variante converte mais.",
+      "Divida seu tráfego entre múltiplas landing pages com um único link. Descubra qual oferta é mais lucrativa.",
     images: ["/logo-square.png"],
   },
 }
