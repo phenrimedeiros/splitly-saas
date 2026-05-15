@@ -35,12 +35,15 @@ export function AnimatedCounter({
   suffix?: string
   duration?: number
 }) {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(target)
+  const [animating, setAnimating] = useState(false)
   const ref = useRef<HTMLSpanElement>(null!)
   const inView = useInView(ref)
 
   useEffect(() => {
-    if (!inView) return
+    if (!inView || animating) return
+    setAnimating(true)
+    setCount(0)
     let start = 0
     const step = Math.ceil(target / (duration / 16))
     const timer = setInterval(() => {
@@ -53,7 +56,7 @@ export function AnimatedCounter({
       }
     }, 16)
     return () => clearInterval(timer)
-  }, [inView, target, duration])
+  }, [inView, target, duration, animating])
 
   return (
     <span ref={ref} className="tabular-nums">
@@ -166,10 +169,15 @@ export function AnimatedMockup() {
 
   return (
     <div ref={ref} className="rounded-xl border border-border overflow-hidden shadow-xl">
-      <div className="bg-primary p-2 flex items-center gap-1.5">
-        <div className="size-2.5 rounded-full bg-red-400" />
-        <div className="size-2.5 rounded-full bg-amber-400" />
-        <div className="size-2.5 rounded-full bg-emerald-400 animate-pulse" />
+      <div className="bg-primary p-2 flex items-center justify-between gap-1.5">
+        <div className="flex items-center gap-1.5">
+          <div className="size-2.5 rounded-full bg-red-400" />
+          <div className="size-2.5 rounded-full bg-amber-400" />
+          <div className="size-2.5 rounded-full bg-emerald-400 animate-pulse" />
+        </div>
+        <span className="text-[10px] text-primary-foreground/60 font-medium uppercase tracking-wider mr-2">
+          Exemplo de resultado
+        </span>
       </div>
 
       <div className="bg-background p-6 sm:p-8 space-y-4">
@@ -205,7 +213,7 @@ export function AnimatedMockup() {
                       : "text-muted-foreground/50"
                   }`}
                 >
-                  {inView ? `${v.pct}%` : "0%"}
+                  {v.pct}%
                 </span>
               </div>
               <div className="h-6 rounded bg-muted overflow-hidden relative">
@@ -237,13 +245,13 @@ export function AnimatedMockup() {
             Declarar campeã
           </div>
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-            <AnimatedCounter target={inView ? 145 : 0} suffix=" cliques" />
-            <AnimatedCounter target={inView ? 12 : 0} suffix=" vendas" />
+            <AnimatedCounter target={145} suffix=" cliques" />
+            <AnimatedCounter target={12} suffix=" vendas" />
             <span className="font-semibold text-foreground">
-              <AnimatedCounter target={inView ? 1164 : 0} prefix="R$ " />
+              <AnimatedCounter target={1164} prefix="R$ " />
             </span>
             <span className="text-emerald-600 dark:text-emerald-400 font-bold">
-              ROAS <AnimatedCounter target={inView ? 5.8 : 0} suffix="x" duration={2000} />
+              ROAS <AnimatedCounter target={5.8} suffix="x" duration={2000} />
             </span>
           </div>
         </div>

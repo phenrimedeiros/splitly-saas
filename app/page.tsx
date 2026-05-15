@@ -306,6 +306,112 @@ export default async function LandingPage() {
           </div>
         </section>
 
+        {/* ───── TESTIMONIALS ───── */}
+        <section className="border-t border-border py-24">
+          <div className="mx-auto max-w-5xl px-6">
+            <ScrollReveal>
+              <p className="text-center text-sm font-medium text-muted-foreground/70 uppercase tracking-wider mb-4">
+                Quem usa aprova
+              </p>
+              <h2 className="text-center text-3xl font-bold text-foreground mb-16">
+                Chega de decidir no achismo
+              </h2>
+            </ScrollReveal>
+
+            <div className="grid gap-8 md:grid-cols-3">
+              {[
+                {
+                  quote: "Eu duplicava campanha toda semana pra testar landing page. Agora é um link só. O motor já me mostrou qual PV converte mais em 3 dias.",
+                  name: "Afiliado Profissional",
+                  role: "Hotmart + Meta Ads",
+                },
+                {
+                  quote: "O que mais me impressionou foi o tracking. Cada venda aparece na variante certa. Consigo ver exatamente qual página traz mais lucro, não só mais clique.",
+                  name: "Produtor Lançador",
+                  role: "Kiwify + YouTube",
+                },
+                {
+                  quote: "Mostro os resultados pros meus clientes pelo link público. Transparência total. Eles amam ver que a decisão é baseada em estatística, não em feeling.",
+                  name: "Agência de Tráfego",
+                  role: "Eduzz + Meta Ads",
+                },
+              ].map((t, i) => (
+                <ScrollReveal key={i}>
+                  <div className="rounded-xl bg-background p-6 ring-1 ring-border hover:ring-emerald-500/20 transition-all duration-300">
+                    <div className="flex items-center gap-1 mb-4">
+                      {[1, 2, 3, 4, 5].map((s) => (
+                        <svg key={s} className="size-4 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                      &ldquo;{t.quote}&rdquo;
+                    </p>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">{t.name}</p>
+                      <p className="text-xs text-muted-foreground/70">{t.role}</p>
+                    </div>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ───── FAQ ───── */}
+        <section className="border-t border-border bg-muted/30 py-24">
+          <div className="mx-auto max-w-2xl px-6">
+            <ScrollReveal>
+              <p className="text-center text-sm font-medium text-muted-foreground/70 uppercase tracking-wider mb-4">
+                Dúvidas comuns
+              </p>
+              <h2 className="text-center text-3xl font-bold text-foreground mb-16">
+                Perguntas que todo mundo faz
+              </h2>
+            </ScrollReveal>
+
+            <div className="space-y-4">
+              {[
+                {
+                  q: "Preciso instalar alguma coisa nas minhas landing pages?",
+                  a: "Só colar um script de 1 linha no <head> de cada página. Isso garante que o código de rastreio chegue até o checkout da Hotmart. O postback você configura uma vez na Hotmart, em 30 segundos.",
+                },
+                {
+                  q: "Funciona com qualquer plataforma?",
+                  a: "Sim. Hotmart, Kiwify, Eduzz, Monetizze, Braip, PerfectPay, Yampi, Cartpanda, Doppus e HeroSpark têm suporte nativo. Se sua plataforma tem webhook de venda, o Splitly integra.",
+                },
+                {
+                  q: "O que significa '95% de confiança estatística'?",
+                  a: "O motor bayesiano roda 10.000 simulações de Monte Carlo comparando as variantes. Quando uma atinge 95% de probabilidade de ser a melhor, é porque a matemática tem certeza — não é achismo. Você pode ajustar esse threshold nas configurações.",
+                },
+                {
+                  q: "Meus dados de venda ficam seguros?",
+                  a: "Sim. O Splitly remove automaticamente emails, telefones, endereços e documentos dos postbacks antes de armazenar. Só guardamos o que importa: valor da venda, status e qual variante gerou a conversão.",
+                },
+                {
+                  q: "É grátis mesmo? Até quando?",
+                  a: "O plano atual é gratuito. Quando lançarmos planos pagos, você será avisado com antecedência e poderá escolher se quer continuar. Quem entrar agora terá condições especiais de early adopter.",
+                },
+              ].map((item, i) => (
+                <ScrollReveal key={i}>
+                  <details className="group rounded-xl bg-background ring-1 ring-border hover:ring-emerald-500/20 transition-all duration-300">
+                    <summary className="flex items-center justify-between px-6 py-4 cursor-pointer list-none">
+                      <span className="text-sm font-medium text-foreground pr-4">{item.q}</span>
+                      <svg className="size-4 shrink-0 text-muted-foreground group-open:rotate-45 transition-transform duration-200" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                      </svg>
+                    </summary>
+                    <div className="px-6 pb-4 text-sm text-muted-foreground leading-relaxed">
+                      {item.a}
+                    </div>
+                  </details>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ───── FINAL CTA ───── */}
         <section className="relative border-t border-border bg-muted/30 py-24 overflow-hidden">
           <GradientOrb className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-emerald-500/8 dark:bg-emerald-500/5" />
@@ -318,12 +424,12 @@ export default async function LandingPage() {
                 Configure em 2 minutos. Sem cartão de crédito. Resultados em tempo real.
               </p>
               <HeroCTA>
-                <Link
-                  href={session ? "/dashboard" : "/register"}
-                  className={cn(buttonVariants({ size: "lg" }), "rounded-xl px-12 py-6 text-lg shadow-xl shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-shadow relative z-10")}
-                >
-                  {session ? "Ir para Dashboard" : "Criar conta gratuita"}
-                </Link>
+              <Link
+                href={session ? "/dashboard" : "/register"}
+                className={cn(buttonVariants({ size: "lg" }), "rounded-xl px-12 py-6 text-lg shadow-xl shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-shadow relative z-10")}
+              >
+                {session ? "Ir para Dashboard" : "Descobrir minha oferta campeã — grátis"}
+              </Link>
               </HeroCTA>
               <div className="mt-8 flex items-center justify-center gap-6 text-xs text-muted-foreground/60">
                 <span className="flex items-center gap-1.5">
