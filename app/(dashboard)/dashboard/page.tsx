@@ -84,15 +84,18 @@ export default async function DashboardPage() {
       </div>
 
       {experimentsWithCounts.length > 0 && (
-        <div className="grid grid-cols-4 gap-4 mb-8">
-          <Card>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <Card className="border-emerald-500/10 bg-emerald-500/3">
             <CardHeader className="pb-2">
-              <CardTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+              <CardTitle className="text-xs font-medium text-emerald-400/80 uppercase tracking-wide">
                 Ativos
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-foreground">{activeCount}</p>
+              <p className="text-2xl font-bold text-emerald-400">{activeCount}</p>
+              <div className="mt-2 h-1 rounded-full bg-emerald-500/10">
+                <div className="h-full rounded-full bg-emerald-500/40" style={{ width: `${Math.min((activeCount / experimentsWithCounts.length) * 100, 100)}%` }} />
+              </div>
             </CardContent>
           </Card>
           <Card>
@@ -115,14 +118,14 @@ export default async function DashboardPage() {
               <p className="text-2xl font-bold text-amber-400">{totalSales}</p>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border-amber-500/10 bg-amber-500/3">
             <CardHeader className="pb-2">
-              <CardTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+              <CardTitle className="text-xs font-medium text-amber-400/80 uppercase tracking-wide">
                 Receita
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-foreground">
+              <p className="text-2xl font-bold text-amber-400">
                 R$ {totalRevenue.toFixed(0)}
               </p>
             </CardContent>
@@ -148,63 +151,63 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid gap-3">
           {experimentsWithCounts.map((exp) => (
-            <Card key={exp.id} className="hover:shadow-md transition-shadow">
+            <Card key={exp.id} className="hover:shadow-lg hover:border-emerald-500/15 transition-all duration-200">
               <CardContent className="flex items-center justify-between py-4">
                 <Link
                   href={`/experiments/${exp.id}`}
                   className="flex-1 min-w-0 group"
                 >
                   <div className="flex items-center gap-3">
+                    <div className={cn(
+                      "size-2 rounded-full shrink-0",
+                      exp.status === "active" ? "bg-emerald-400 animate-pulse" : "bg-border"
+                    )} />
                     <div>
                       <p className="text-sm font-semibold text-foreground group-hover:underline">
                         {exp.name}
                       </p>
-                      <p className="text-xs font-mono text-muted-foreground/70">
+                      <p className="text-xs font-mono text-foreground/40">
                         /r/{exp.slug}
                       </p>
                     </div>
                   </div>
                 </Link>
 
-                <div className="flex items-center gap-6">
-                  <div className="text-right">
-                    <Badge
-                      variant={
-                        exp.status === "active"
-                          ? "default"
-                          : exp.status === "paused"
-                            ? "secondary"
-                            : "outline"
-                      }
-                      className="text-xs"
-                    >
-                      {exp.status === "active"
-                        ? "Ativo"
-                        : exp.status === "paused"
-                          ? "Pausado"
-                          : "Rascunho"}
-                    </Badge>
-                  </div>
-
-                  <div className="flex items-center gap-6 text-xs text-muted-foreground">
-                    <span>
-                      <span className="font-medium text-foreground/80">{exp.clicks}</span>{" "}
-                      cliques
+                <div className="flex items-center gap-5">
+                  <div className="flex items-center gap-5 text-xs">
+                    <span className="text-foreground/60">
+                      <span className="font-semibold text-foreground/80">{exp.clicks}</span> cliques
                     </span>
-                    <span>
-                      <span className="font-medium text-amber-400">{exp.sales}</span>{" "}
-                      vendas
+                    <span className="text-foreground/60">
+                      <span className="font-semibold text-amber-400">{exp.sales}</span> vendas
                     </span>
                     {Number(exp.revenue || 0) > 0 && (
-                      <span className="text-amber-400 font-medium">
+                      <span className="font-semibold text-amber-400">
                         R$ {Number(exp.revenue).toFixed(0)}
                       </span>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <Badge
+                    variant={
+                      exp.status === "active"
+                        ? "default"
+                        : exp.status === "paused"
+                          ? "secondary"
+                          : "outline"
+                    }
+                    className="text-[10px]"
+                  >
+                    {exp.status === "active"
+                      ? "Ativo"
+                      : exp.status === "paused"
+                        ? "Pausado"
+                        : "Rascunho"}
+                  </Badge>
+
+                  <div className="flex items-center gap-1.5">
                     <ToggleButton experimentId={exp.id} status={exp.status} />
                     <DeleteButton experimentId={exp.id} name={exp.name} />
                   </div>

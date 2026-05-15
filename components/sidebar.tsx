@@ -55,6 +55,11 @@ export function Sidebar({ user }: { user: { name?: string | null; email?: string
     },
   ]
 
+  function isActive(href: string) {
+    if (href === "/dashboard") return pathname === "/dashboard"
+    return pathname.startsWith(href)
+  }
+
   return (
     <>
       <Button
@@ -78,40 +83,44 @@ export function Sidebar({ user }: { user: { name?: string | null; email?: string
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex items-center gap-2.5 px-5 py-4">
-          <Link href="/dashboard" className="flex items-center" onClick={() => setOpen(false)}>
+        <div className="flex items-center gap-2.5 px-5 py-4 border-b border-border/50">
+          <Link href="/dashboard" className="flex items-center gap-2" onClick={() => setOpen(false)}>
             <img src="/logo.png" alt="Splitly" className="h-5 w-auto dark:hidden" />
             <img src="/logo-white.png" alt="Splitly" className="h-5 w-auto hidden dark:block" />
+            <span className="text-[10px] font-semibold text-emerald-500/70 uppercase tracking-widest">Lead</span>
           </Link>
         </div>
 
         <nav className="flex flex-1 flex-col gap-0.5 px-3 py-2">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setOpen(false)}
-              className={cn(
-                "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                pathname === link.href || (link.href !== "/dashboard" && pathname.startsWith(link.href))
-                  ? "bg-muted text-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              )}
-            >
-              {link.icon}
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) => {
+            const active = isActive(link.href)
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className={cn(
+                  "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
+                  active
+                    ? "bg-emerald-500/10 text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.12)]"
+                    : "text-foreground/60 hover:bg-muted hover:text-foreground/90"
+                )}
+              >
+                <span className={active ? "text-emerald-400" : ""}>{link.icon}</span>
+                {link.label}
+              </Link>
+            )
+          })}
         </nav>
 
-        <div className="border-t border-border p-3 space-y-2">
-          <div className="flex items-center gap-2.5 px-3 py-2">
-            <Avatar className="size-6 text-xs">
-              <AvatarFallback className="bg-primary text-primary-foreground">{initials}</AvatarFallback>
+        <div className="border-t border-border/50 p-3 space-y-3">
+          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-muted/50">
+            <Avatar className="size-7 text-xs ring-2 ring-emerald-500/20">
+              <AvatarFallback className="bg-emerald-500/15 text-emerald-400 text-[10px] font-bold">{initials}</AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium truncate">{user.name}</p>
-              <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+              <p className="text-xs font-semibold text-foreground truncate">{user.name}</p>
+              <p className="text-[10px] text-foreground/40 truncate">{user.email}</p>
             </div>
           </div>
 
