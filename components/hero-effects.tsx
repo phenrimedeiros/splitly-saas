@@ -2,53 +2,121 @@
 
 import { useEffect, useRef, useState, useCallback } from "react"
 
-// ─── Floating Shapes ────────────────────────────────────────────
-function FloatingShapes() {
+// ─── Particle Network (data mesh / neural network) ───────────────
+function ParticleNetwork() {
   const canvasRef = useRef<HTMLCanvasElement>(null!)
 
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext("2d")
     if (!ctx) return
+    const c = ctx // stable non-null ref for closures
 
+    let w = 0, h = 0
     const resize = () => {
       const rect = canvas.parentElement!.getBoundingClientRect()
-      canvas.width = rect.width
-      canvas.height = rect.height
+      w = canvas.width = rect.width * devicePixelRatio
+      h = canvas.height = rect.height * devicePixelRatio
+      canvas.style.width = rect.width + "px"
+      canvas.style.height = rect.height + "px"
+      c.scale(devicePixelRatio, devicePixelRatio)
+      w = rect.width; h = rect.height
     }
     resize()
     window.addEventListener("resize", resize)
 
-    const shapes = Array.from({ length: 12 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 40 + 10,
-      dx: (Math.random() - 0.5) * 0.3,
-      dy: (Math.random() - 0.5) * 0.3,
-      opacity: Math.random() * 0.04 + 0.02,
-    }))
+    const PARTICLE_COUNT = 60
+    const CONNECTION_DIST = 140
+    const MOUSE_RADIUS = 160
+
+    interface Particle {
+      x: number; y: number; vx: number; vy: number; r: number
+    }
+
+    const particles: Particle[] = []
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        r: Math.random() * 2 + 1.2,
+      })
+    }
+
+    let mouse = { x: -1e3, y: -1e3 }
+    const onMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect()
+      mouse = { x: e.clientX - rect.left, y: e.clientY - rect.top }
+    }
+    window.addEventListener("mousemove", onMove)
 
     let raf: number
     function animate() {
-      if (!ctx) return
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      c.clearRect(0, 0, w, h)
 
       const isDark = document.documentElement.classList.contains("dark")
+      const lineColor = isDark ? "18, 184, 134" : "16, 185, 129"
+      const nodeColor = isDark ? "rgba(52,211,153,0.55)" : "rgba(16,185,129,0.45)"
+      const nodeGlow = isDark ? "rgba(52,211,153,0.25)" : "rgba(16,185,129,0.18)"
 
-      for (const s of shapes) {
-        s.x += s.dx
-        s.y += s.dy
-        if (s.x < -50) s.x = canvas.width + 50
-        if (s.x > canvas.width + 50) s.x = -50
-        if (s.y < -50) s.y = canvas.height + 50
-        if (s.y > canvas.height + 50) s.y = -50
+      // Update
+      for (const p of particles) {
+        p.x += p.vx
+        p.y += p.vy
+        if (p.x < 0) p.x = w
+        if (p.x > w) p.x = 0
+        if (p.y < 0) p.y = h
+        if (p.y > h) p.y = 0
 
-        ctx.beginPath()
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2)
-        ctx.fillStyle = isDark
-          ? `rgba(255,255,255,${s.opacity * 1.5})`
-          : `rgba(15,23,42,${s.opacity})`
-        ctx.fill()
+        // Micro attract to mouse
+        const dxm = mouse.x - p.x
+        const dym = mouse.y - p.y
+        const dm = Math.sqrt(dxm * dxm + dym * dym)
+        if (dm < MOUSE_RADIUS && dm > 1) {
+          const force = (MOUSE_RADIUS - dm) / MOUSE_RADIUS * 0.15
+          p.vx += (dxm / dm) * force
+          p.vy += (dym / dm) * force
+        }
+
+        // Dampen
+        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy)
+        const maxSpeed = 0.7
+        if (speed > maxSpeed) {
+          p.vx = (p.vx / speed) * maxSpeed
+          p.vy = (p.vy / speed) * maxSpeed
+        }
+      }
+
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x
+          const dy = particles[i].y - particles[j].y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < CONNECTION_DIST) {
+            const alpha = (1 - dist / CONNECTION_DIST) * 0.25
+            c.beginPath()
+            c.moveTo(particles[i].x, particles[i].y)
+            c.lineTo(particles[j].x, particles[j].y)
+            c.strokeStyle = `rgba(${lineColor},${alpha})`
+            c.lineWidth = 0.6
+            c.stroke()
+          }
+        }
+      }
+
+      // Draw nodes
+      for (const p of particles) {
+        c.beginPath()
+        c.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        c.fillStyle = nodeColor
+        c.fill()
+
+        c.beginPath()
+        c.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2)
+        c.fillStyle = nodeGlow
+        c.fill()
       }
 
       raf = requestAnimationFrame(animate)
@@ -57,6 +125,7 @@ function FloatingShapes() {
 
     return () => {
       window.removeEventListener("resize", resize)
+      window.removeEventListener("mousemove", onMove)
       cancelAnimationFrame(raf)
     }
   }, [])
@@ -160,7 +229,7 @@ export function HeroEffects() {
 }
 
 export function HeroBackground() {
-  return <FloatingShapes />
+  return <ParticleNetwork />
 }
 
 export function HeroTypewriter({ phases, className }: { phases: string[]; className?: string }) {

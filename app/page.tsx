@@ -52,7 +52,7 @@ export default async function LandingPage() {
 
       <main>
         {/* ───── HERO ───── */}
-        <section className="relative mx-auto max-w-6xl px-6 pt-28 pb-20 text-center overflow-hidden">
+        <section className="relative min-h-screen flex flex-col items-center justify-center mx-auto max-w-6xl px-6 py-20 text-center overflow-hidden">
           <GridPattern />
           <GradientOrb className="top-0 -left-64 w-[600px] h-[600px] bg-emerald-500/15 dark:bg-emerald-500/10" />
           <GradientOrb className="top-32 -right-64 w-[500px] h-[500px] bg-violet-500/10 dark:bg-violet-500/8" />
