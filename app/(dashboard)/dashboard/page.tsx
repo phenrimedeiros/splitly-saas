@@ -134,18 +134,26 @@ export default async function DashboardPage() {
       )}
 
       {experimentsWithCounts.length === 0 ? (
-        <Card className="border-dashed">
-          <CardContent className="flex flex-col items-center gap-3 py-16">
-            <div className="flex size-12 items-center justify-center rounded-full bg-muted">
-              <svg className="size-6 text-muted-foreground/70" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        <Card className="border-dashed border-emerald-500/20 bg-emerald-500/3">
+          <CardContent className="flex flex-col items-center gap-4 py-20">
+            <div className="flex size-16 items-center justify-center rounded-2xl bg-emerald-500/10 ring-1 ring-emerald-500/20">
+              <svg className="size-8 text-emerald-400" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
               </svg>
             </div>
-            <p className="text-sm text-muted-foreground">Nenhum experimento ainda.</p>
+            <div className="text-center space-y-1.5">
+              <p className="text-sm font-semibold text-foreground">Nenhum experimento ainda</p>
+              <p className="text-xs text-foreground/50 max-w-xs">
+                Crie seu primeiro teste A/B para descobrir qual oferta gera mais lucro.
+              </p>
+            </div>
             <Link
               href="/dashboard/new"
-              className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "inline-flex")}
+              className={cn(buttonVariants({ size: "sm" }), "inline-flex shadow-lg shadow-emerald-500/20")}
             >
+              <svg className="size-3.5 mr-1.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
               Criar primeiro experimento
             </Link>
           </CardContent>
