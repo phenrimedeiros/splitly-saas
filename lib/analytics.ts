@@ -82,6 +82,7 @@ export interface AnalysisResult {
 }
 
 export type TestDecision =
+  | "awaiting_sales"
   | "collecting_data"
   | "in_progress"
   | "leader_detected"
@@ -125,7 +126,22 @@ export function analyzeExperiment(
   }
 
   const totalClicks = stats.reduce((s, v) => s + v.clicks, 0)
+  const totalSales = stats.reduce((s, v) => s + v.sales, 0)
   const minClicksPerVariant = Math.min(...stats.map((v) => v.clicks))
+
+  if (totalClicks > 0 && totalSales === 0) {
+    const variantsWithClicks = stats.filter((v) => v.clicks > 0).length
+    return {
+      variants: stats.map((s) => simpleStats(s, totalCost, totalWeight)),
+      status: "awaiting_sales",
+      recommendation: variantsWithClicks > 0
+        ? `📡 ${totalClicks} clique${totalClicks !== 1 ? "s" : ""} registrado${totalClicks !== 1 ? "s" : ""} em ${variantsWithClicks} variante${variantsWithClicks !== 1 ? "s" : ""}, mas nenhuma venda ainda. Assim que a Hotmart enviar o primeiro postback o motor bayesiano entra em ação. Verifique se o postback está configurado em Ferramentas → Notificação de vendas.`
+        : "Nenhum clique registrado ainda. O motor bayesiano iniciará a análise assim que as primeiras vendas aparecerem.",
+      estimatedRemainingClicks: null,
+      bestVariantId: null,
+      confidenceLevel: null,
+    }
+  }
 
   if (minClicksPerVariant < 5) {
     return {

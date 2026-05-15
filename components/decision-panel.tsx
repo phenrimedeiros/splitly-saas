@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import type { AnalysisResult, BayesianResult } from "@/lib/analytics"
 
 const STATUS_LABELS: Record<string, { label: string; variant: "default" | "secondary" | "outline" | "destructive" }> = {
+  awaiting_sales: { label: "Aguardando vendas", variant: "secondary" },
   collecting_data: { label: "Coletando dados", variant: "secondary" },
   in_progress: { label: "Em andamento", variant: "secondary" },
   leader_detected: { label: "Líder detectado", variant: "default" },
